@@ -10,12 +10,6 @@ export default function AddDroppableCard({
 }) {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        if (inputRef?.current) {
-            inputRef.current.focus();
-        }
-    }, [inputRef]);
-
     const handleAdd = () => {
         if (inputRef?.current) {
             if (inputRef.current.value.trim()) {
@@ -47,6 +41,7 @@ export default function AddDroppableCard({
         <div className="shrink-0 max-w-[300px] w-full p-3 bg-gray-200 border border-gray-300 rounded-md shadow-sm">
             <div className="mb-4 border w-full">
                 <input
+                    autoFocus
                     type="text"
                     ref={inputRef}
                     onKeyDown={handleKeyDown}

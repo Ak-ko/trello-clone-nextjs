@@ -1,6 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import AddTaskCardButton from "./add-task-card-button";
+import TaskCard from "./task-card";
+import { defaultTasks } from "@/data/boards";
+import TaskCardSection from "./task-card-section";
 
 export default function DroppableCard({
     droppableCard,
@@ -15,7 +19,6 @@ export default function DroppableCard({
 
     useEffect(() => {
         if (editing && inputRef.current) {
-            inputRef.current.focus();
             inputRef.current.select();
         }
     }, [editing]);
@@ -57,14 +60,18 @@ export default function DroppableCard({
     };
 
     return (
-        <div className="shrink-0 max-w-[300px] w-full p-3 bg-gray-200 border border-gray-300 rounded-md shadow-sm">
+        <div className="shrink-0 max-w-[300px] w-full p-3 bg-gray-200 border border-gray-300 rounded-xl shadow-sm">
             <div>
                 {!editing ? (
-                    <h1 onClick={handleClick} className="font-bold text-wrap">
+                    <h1
+                        onClick={handleClick}
+                        className="font-bold text-wrap mb-3"
+                    >
                         {droppableCard.name}
                     </h1>
                 ) : (
                     <input
+                        autoFocus
                         className="border w-full"
                         onBlur={handleBlur}
                         onKeyDown={handleKeyDown}
@@ -74,6 +81,8 @@ export default function DroppableCard({
                     />
                 )}
             </div>
+
+            <TaskCardSection />
         </div>
     );
 }

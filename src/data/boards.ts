@@ -27,3 +27,5 @@ export const boards = [
 ];
 
 export const defaultDroppableCards = [{ id: 1, name: "Working On" }];
+
+export const defaultTasks = [{ id: 1, name: "Task 1" }];
