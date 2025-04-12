@@ -1,3 +1,4 @@
+import { keydownActions } from "@/lib/keydown";
 import { XIcon } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 
@@ -25,16 +26,8 @@ export default function AddDroppableCard({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        switch (e.key) {
-            case "Enter":
-                handleAdd();
-                break;
-            case "Escape":
-                handleCancel();
-                break;
-            default:
-                break;
-        }
+        keydownActions.enter(e, handleAdd);
+        keydownActions.escape(e, handleCancel);
     };
 
     return (

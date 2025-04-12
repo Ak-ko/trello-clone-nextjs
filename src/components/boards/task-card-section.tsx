@@ -11,15 +11,28 @@ export default function TaskCardSection() {
         const newTask = {
             id: tasks[tasks.length - 1].id + 1,
             name,
+            isCompleted: false,
         };
         setTasks((prevTasks) => [...prevTasks, newTask]);
+    };
+
+    const handleTaskCompletion = (taskId: number, isCompleted: boolean) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === taskId ? { ...task, isCompleted } : task
+            )
+        );
     };
 
     return (
         <>
             <div className="space-y-2">
                 {tasks?.map((task) => (
-                    <TaskCard task={task} key={task.id} />
+                    <TaskCard
+                        task={task}
+                        key={task.id}
+                        onCompleteTask={handleTaskCompletion}
+                    />
                 ))}
             </div>
 

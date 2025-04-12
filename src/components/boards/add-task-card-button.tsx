@@ -1,3 +1,4 @@
+import { keydownActions } from "@/lib/keydown";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -31,16 +32,8 @@ export default function AddTaskCardButton({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        switch (e.key) {
-            case "Enter":
-                handleAdd();
-                break;
-            case "Escape":
-                handleCancel();
-                break;
-            default:
-                break;
-        }
+        keydownActions.enter(e, handleAdd);
+        keydownActions.escape(e, handleCancel);
     };
 
     return !adding ? (

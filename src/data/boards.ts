@@ -1,3 +1,5 @@
+import { DroppableCardT } from "@/@types/board";
+
 export const boards = [
     {
         id: 1,
@@ -26,6 +28,8 @@ export const boards = [
     },
 ];
 
-export const defaultDroppableCards = [{ id: 1, name: "Working On" }];
+export const defaultDroppableCards: DroppableCardT[] = [
+    { id: 1, name: "Working On" },
+];
 
-export const defaultTasks = [{ id: 1, name: "Task 1" }];
+export const defaultTasks = [{ id: 1, name: "Task 1", isCompleted: false }];

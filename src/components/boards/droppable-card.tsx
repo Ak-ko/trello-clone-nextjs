@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import AddTaskCardButton from "./add-task-card-button";
-import TaskCard from "./task-card";
-import { defaultTasks } from "@/data/boards";
 import TaskCardSection from "./task-card-section";
+import { keydownActions } from "@/lib/keydown";
 
 export default function DroppableCard({
     droppableCard,
@@ -47,16 +45,8 @@ export default function DroppableCard({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        switch (e.key) {
-            case "Enter":
-                handleEdit();
-                break;
-            case "Escape":
-                handleCancel();
-                break;
-            default:
-                break;
-        }
+        keydownActions.enter(e, handleEdit);
+        keydownActions.escape(e, handleCancel);
     };
 
     return (

@@ -4,6 +4,7 @@ import { defaultDroppableCards } from "@/data/boards";
 import React, { useState } from "react";
 import DroppableCard from "./droppable-card";
 import AddDroppableCardButton from "./add-droppable-card-button";
+import { DroppableCardT } from "@/@types/board";
 
 export default function DroppableCards() {
     const [droppableCards, setDroppableCards] = useState(defaultDroppableCards);
@@ -24,7 +25,7 @@ export default function DroppableCards() {
         if (!name) return;
 
         const newDroppableCards = droppableCards?.map(
-            (card: { id: number; name: string }) => {
+            (card: DroppableCardT) => {
                 if (card.id === id) {
                     return { ...card, name };
                 }

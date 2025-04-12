@@ -1,13 +1,10 @@
+import { BoardT } from "@/@types/board";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 import Link from "next/link";
 import React from "react";
 
-export default function BoardCard({
-    board,
-}: {
-    board: { id: number; name: string; description: string };
-}) {
+export default function BoardCard({ board }: { board: BoardT }) {
     return (
         <Link href={`/board/${board.id}`} key={board.id}>
             <Card className="shadow-md hover:shadow-lg cursor-pointer">
