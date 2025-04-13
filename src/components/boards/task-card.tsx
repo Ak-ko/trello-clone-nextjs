@@ -1,53 +1,71 @@
-import { TaskCardT } from "@/@types/board";
-import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
+import { TaskT } from "@/@types/board";
+import { Card, CardContent } from "../ui/card";
 
 import CustomCheckBox from "../custom-checkbox";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../ui/dialog";
+import TaskCardDetails from "./task-card-details";
 
 export default function TaskCard({
     task,
     onCompleteTask,
+    onEditTask,
 }: {
-    task: TaskCardT;
+    task: TaskT;
     onCompleteTask?: (taskId: number, isCompleted: boolean) => void;
+    onEditTask?: (taskId: number, name: string) => void;
 }) {
     const handleChecked = (checked: boolean) => {
         onCompleteTask?.(task.id, checked);
     };
 
-    return (
-        <Card className="!p-3 rounded-xl cursor-pointer hover:shadow-lg group/task-card">
-            <CardTitle hidden />
-            <CardDescription hidden />
+    const handleEdit = (id: number, name: string) => {
+        onEditTask?.(id, name);
+    };
 
-            <CardContent className="!px-4">
-                <div className="flex items-center">
-                    <CustomCheckBox
-                        defaultChecked={task.isCompleted}
-                        onChecked={handleChecked}
-                        className={`${
-                            !task.isCompleted
-                                ? "invisible opacity-0 group-hover/task-card:visible group-hover/task-card:opacity-100 group-hover/task-card:mr-1.5"
-                                : "mr-1.5"
-                        }   transition-all duration-500 mt-0.5`}
-                    />
-                    <div
-                        className={`${
-                            !task.isCompleted &&
-                            "-translate-x-[20px] group-hover/task-card:translate-x-0"
-                        } transition-all duration-500`}
-                    >
-                        {!task.isCompleted ? (
-                            <h3 className="text-sm font-semibold text-gray-800 select-none">
-                                {task.name}
-                            </h3>
-                        ) : (
-                            <del className="text-sm font-semibold text-gray-800 select-none">
-                                {task.name}
-                            </del>
-                        )}
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Card className="!p-3 rounded-xl cursor-pointer hover:shadow-lg group/task-card">
+                    <CardContent className="!px-4">
+                        <div className="flex items-center">
+                            <CustomCheckBox
+                                defaultChecked={task.isCompleted}
+                                onChecked={handleChecked}
+                                className={`${
+                                    !task.isCompleted
+                                        ? "invisible opacity-0 group-hover/task-card:visible group-hover/task-card:opacity-100 group-hover/task-card:mr-1.5"
+                                        : "mr-1.5"
+                                }   transition-all duration-500 mt-0.5`}
+                            />
+                            <div
+                                className={`${
+                                    !task.isCompleted &&
+                                    "-translate-x-[20px] group-hover/task-card:translate-x-0"
+                                } transition-all duration-500`}
+                            >
+                                <h3
+                                    className={`${
+                                        task.isCompleted && "line-through"
+                                    }  text-sm font-semibold text-gray-800 select-none transition-all duration-500`}
+                                >
+                                    {task.name}
+                                </h3>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </DialogTrigger>
+
+            <DialogContent className="sm:max-w-[900px]">
+                <TaskCardDetails onEdit={handleEdit} task={task} />
+            </DialogContent>
+        </Dialog>
     );
 }

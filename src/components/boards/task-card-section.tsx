@@ -16,6 +16,14 @@ export default function TaskCardSection() {
         setTasks((prevTasks) => [...prevTasks, newTask]);
     };
 
+    const handleEditTask = (taskId: number, name: string) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === taskId ? { ...task, name } : task
+            )
+        );
+    };
+
     const handleTaskCompletion = (taskId: number, isCompleted: boolean) => {
         setTasks((prevTasks) =>
             prevTasks.map((task) =>
@@ -32,6 +40,7 @@ export default function TaskCardSection() {
                         task={task}
                         key={task.id}
                         onCompleteTask={handleTaskCompletion}
+                        onEditTask={handleEditTask}
                     />
                 ))}
             </div>

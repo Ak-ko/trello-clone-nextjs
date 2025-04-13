@@ -5,7 +5,7 @@ export type DroppableCardT = {
     name: string;
 };
 
-export type TaskCardT = {
+export type TaskT = {
     id: number;
     name: string;
     isCompleted?: boolean;

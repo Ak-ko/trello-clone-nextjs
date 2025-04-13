@@ -12,7 +12,9 @@ export default function CustomCheckBox({
 }) {
     const [checked, setChecked] = useState(defaultChecked || false);
 
-    const handleChecked = () => {
+    const handleChecked = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+
         setChecked((prev) => !prev);
 
         onChecked?.(!checked);
