@@ -7,6 +7,7 @@ import DueDatePicker, { DateRangeT } from "./due-date-picker";
 import Dates from "./date-inputs/dates";
 import MemberPicker from "./members/member-picker";
 import TaskMembers from "./members/task-members";
+import DescriptionTextEditor from "./description-text-editor";
 
 export default function TaskCardDetails({
     task,
@@ -68,6 +69,10 @@ export default function TaskCardDetails({
         setSelectedMembers(members);
     };
 
+    const handleDescriptionSave = (description: string) => {
+        console.log({ description });
+    };
+
     return (
         <DialogHeader>
             <DialogTitle>
@@ -93,8 +98,6 @@ export default function TaskCardDetails({
                 </div>
             </DialogTitle>
             {/* 
-                Memnbers Section
-
                 Description with Rich Text Editor
                 
                 Comment Section
@@ -105,6 +108,11 @@ export default function TaskCardDetails({
                         <div className="flex items-center gap-8">
                             <TaskMembers members={selectedMembers} />
                             <Dates dateRange={dateRange} />
+                        </div>
+                        <div>
+                            <DescriptionTextEditor
+                                onSave={handleDescriptionSave}
+                            />
                         </div>
                     </div>
                     <div className="bg-primary/80 shadow-inner shadow-gray-500 basis-[30%] p-2 rounded-lg space-y-3">
