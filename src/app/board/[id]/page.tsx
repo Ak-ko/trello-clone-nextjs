@@ -3,7 +3,7 @@ import { boards } from "@/data/boards";
 import React from "react";
 import BackButton from "@/components/back-button";
 import DroppableCardSection from "@/components/boards/droppable-card-section";
-import MemberAvater from "@/components/boards/member-avater";
+import BoardMembersSection from "@/components/boards/members/board-members-section";
 
 export default async function BoardPage({
     params,
@@ -28,7 +28,7 @@ export default async function BoardPage({
                 <div className="my-11">
                     <BackButton />
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-start justify-between">
                     <div className="space-y-4 mb-11">
                         <h1 className="font-bold">{board.name}</h1>
                         <p className="text-gray-500 text-sm">
@@ -36,15 +36,7 @@ export default async function BoardPage({
                         </p>
                     </div>
 
-                    <div className="flex">
-                        {board.members.map((member) => (
-                            <MemberAvater
-                                className="-ml-2 cursor-pointer w-8 h-8"
-                                key={member.id}
-                                member={member}
-                            />
-                        ))}
-                    </div>
+                    <BoardMembersSection board={board} />
                 </div>
 
                 <DroppableCardSection />

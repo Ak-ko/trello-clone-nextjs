@@ -1,6 +1,11 @@
 import { DateRangeT } from "@/components/boards/due-date-picker";
 
-export type BoardT = { id: number; name: string; description: string };
+export type BoardT = {
+    id: number;
+    name: string;
+    description: string;
+    members: UserT[];
+};
 
 export type DroppableCardT = {
     id: number;
