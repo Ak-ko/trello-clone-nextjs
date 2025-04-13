@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import TaskCard from "./task-card";
 import AddTaskCardButton from "./add-task-card-button";
+import { UserT } from "@/@types/board";
 
 export default function TaskCardSection() {
     const [tasks, setTasks] = useState(defaultTasks);

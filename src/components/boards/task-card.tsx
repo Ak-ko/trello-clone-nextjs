@@ -1,4 +1,4 @@
-import { TaskT } from "@/@types/board";
+import { TaskT, UserT } from "@/@types/board";
 import { Card, CardContent } from "../ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
@@ -13,6 +13,7 @@ export default function TaskCard({
     task: TaskT;
     onCompleteTask?: (taskId: number, isCompleted: boolean) => void;
     onEditTask?: (taskId: number, name: string) => void;
+    onSelectMembers?: (members: UserT[]) => void;
 }) {
     const handleChecked = (checked: boolean) => {
         onCompleteTask?.(task.id, checked);
@@ -56,7 +57,7 @@ export default function TaskCard({
                 </Card>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-[900px]">
+            <DialogContent className="sm:max-w-[900px] border-primary/80 shadow-primary/20 shadow border-4">
                 <TaskCardDetails onEdit={handleEdit} task={task} />
             </DialogContent>
         </Dialog>

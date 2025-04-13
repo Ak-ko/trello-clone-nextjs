@@ -3,12 +3,15 @@ import React from "react";
 import MemberAvater from "../member-avater";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function MemberSelect({
     member,
     onSelect,
     icon,
     variant = "default",
+    avaterClass,
+    textClass,
 }: {
     member: UserT;
     onSelect: (id: number) => void;
@@ -20,12 +23,14 @@ export default function MemberSelect({
         | "outline"
         | "secondary"
         | "ghost";
+    avaterClass?: string;
+    textClass?: string;
 }) {
     return (
         <div className="flex items-center justify-between mt-5">
             <div className="flex items-center gap-3">
-                <MemberAvater member={member} />
-                <h1 className="font-bold">{member.name}</h1>
+                <MemberAvater className={avaterClass} member={member} />
+                <h1 className={cn("font-bold", textClass)}>{member.name}</h1>
             </div>
             <Button
                 size={"icon"}

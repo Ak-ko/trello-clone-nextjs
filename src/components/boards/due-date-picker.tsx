@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     Popover,
     PopoverContent,
@@ -65,7 +65,9 @@ export default function DueDatePicker({
             <PopoverTrigger asChild>
                 <Button
                     variant={"outline"}
-                    className={cn("w-[240px] pl-3 text-left font-normal")}
+                    className={cn(
+                        "w-[240px] pl-3 text-left font-normal cursor-pointer"
+                    )}
                 >
                     <span>Date</span>
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
