@@ -44,10 +44,10 @@ export default function DueDatePicker({
     };
 
     const handleStartTimeChange = (time: string | undefined) => {
-        console.log(time);
+        //
     };
     const handleEndTimeChange = (time: string | undefined) => {
-        console.log(time);
+        //
     };
 
     const handleClosePopover = () => {
