@@ -2,7 +2,6 @@ import { TaskT } from "@/@types/board";
 import { DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useEffect, useRef, useState } from "react";
 import { keydownActions } from "@/lib/keydown";
-import { format } from "date-fns";
 
 import DueDatePicker, { DateRangeT } from "./due-date-picker";
 import Dates from "./date-inputs/dates";
@@ -74,7 +73,7 @@ export default function TaskCardDetails({
                     ) : (
                         <input
                             autoFocus
-                            className="border w-full"
+                            className="border w-full py-1"
                             onBlur={handleBlur}
                             onKeyDown={handleKeyDown}
                             type="text"

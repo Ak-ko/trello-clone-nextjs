@@ -1,15 +1,8 @@
 import { TaskT } from "@/@types/board";
 import { Card, CardContent } from "../ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 import CustomCheckBox from "../custom-checkbox";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "../ui/dialog";
 import TaskCardDetails from "./task-card-details";
 
 export default function TaskCard({
