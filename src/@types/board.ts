@@ -26,4 +26,5 @@ export type UserT = {
     name: string;
     email: string;
     image: string;
+    boards?: BoardT[];
 };

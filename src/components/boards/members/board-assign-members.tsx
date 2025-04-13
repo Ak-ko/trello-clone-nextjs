@@ -1,55 +1,72 @@
 "use client";
 
-import { users } from "@/data/boards";
-import React, { useState } from "react";
+import { boards, users as defaultUsers } from "@/data/boards";
+import React, { useMemo, useState } from "react";
 import { Minus } from "lucide-react";
+import { useParams } from "next/navigation";
 import { UserT } from "@/@types/board";
 
 import MemberList from "./member-list";
 import MemberSelect from "./member-select";
 
 export default function BoardAssignMembers() {
-    const [filterUsers, setFilterUsers] = useState(users);
-    const [selectedUsers, setSelectedUsers] = useState([] as UserT[]);
+    const { id } = useParams();
+    const boardId = Number(id);
 
+    const [users, setUsers] = useState<UserT[]>(defaultUsers);
     const [search, setSearch] = useState("");
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearch(value);
+    const availableUsers = useMemo(() => {
+        return users.filter((user) => {
+            const isNotInBoard = !user?.boards?.some(
+                (board) => board.id === boardId
+            );
+            const matchesSearch = user.name
+                .toLowerCase()
+                .includes(search.toLowerCase());
+            return isNotInBoard && matchesSearch;
+        });
+    }, [users, search, boardId]);
 
-        if (value.trim() === "") {
-            setFilterUsers(users);
-            return;
-        }
-
-        const filteredUsers = users.filter((user) =>
-            user.name.toLowerCase().includes(value.toLowerCase())
+    const selectedUsers = useMemo(() => {
+        return users.filter((user) =>
+            user?.boards?.some((board) => board.id === boardId)
         );
-        setFilterUsers(filteredUsers);
+    }, [users, boardId]);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
     };
 
     const handleSelect = (userId: number) => {
-        const newSelectedUser = users
-            .filter((user) => user.id === userId)
-            .pop();
-
-        if (!newSelectedUser) return;
-
-        setSelectedUsers([...selectedUsers, newSelectedUser]);
-
-        const newFilterUsers = filterUsers.filter((user) => user.id !== userId);
-        setFilterUsers(newFilterUsers);
+        setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user.id === userId
+                    ? {
+                          ...user,
+                          boards: [
+                              ...(user.boards ?? []),
+                              ...boards.filter((b) => b.id === boardId),
+                          ],
+                      }
+                    : user
+            )
+        );
     };
 
     const handleDeSelect = (userId: number) => {
-        const newDeselectUsers = selectedUsers.filter(
-            (user) => user.id !== userId
+        setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+                user.id === userId
+                    ? {
+                          ...user,
+                          boards: user.boards?.filter(
+                              (board) => board.id !== boardId
+                          ),
+                      }
+                    : user
+            )
         );
-        setSelectedUsers(newDeselectUsers);
-
-        const newFilterUsers = users.filter((user) => user.id === userId);
-        setFilterUsers([...filterUsers, ...newFilterUsers]);
     };
 
     return (
@@ -65,7 +82,7 @@ export default function BoardAssignMembers() {
             </div>
 
             <div className="pb-5">
-                <MemberList members={filterUsers}>
+                <MemberList members={availableUsers}>
                     {(user) => (
                         <MemberSelect member={user} onSelect={handleSelect} />
                     )}

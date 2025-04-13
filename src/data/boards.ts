@@ -32,7 +32,7 @@ export const boards = [
         id: 1,
         name: "Marketing",
         description: "Marketing board",
-        members: users.filter((u) => u.id < 3),
+        members: [],
     },
     {
         id: 2,

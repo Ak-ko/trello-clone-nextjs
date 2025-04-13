@@ -90,12 +90,12 @@ export default function TaskCardDetails({
                 
                 Comment Section
             */}
-            <DialogDescription>
+            <DialogDescription asChild>
                 <div className="flex justify-between">
-                    <div>
+                    <div className="basis-[70%]">
                         <Dates dateRange={dateRange} />
                     </div>
-                    <div>
+                    <div className="bg-primary/80 basis-[30%] py-2 px-1 rounded-lg">
                         <DueDatePicker onDateChange={handleDateChange} />
                     </div>
                 </div>
