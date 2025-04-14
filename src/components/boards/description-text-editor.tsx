@@ -21,7 +21,7 @@ export default function DescriptionTextEditor({
                 <TextIcon size={20} />
                 <span className="text-xs font-bold">Description</span>
             </div>
-            <div className="w-full pr-11">
+            <div className="w-full">
                 <RichTextEditor content={content} onChange={setContent} />
             </div>
 

@@ -8,6 +8,7 @@ import Dates from "./date-inputs/dates";
 import MemberPicker from "./members/member-picker";
 import TaskMembers from "./members/task-members";
 import DescriptionTextEditor from "./description-text-editor";
+import CommentSection from "./comment-section";
 
 export default function TaskCardDetails({
     task,
@@ -109,10 +110,12 @@ export default function TaskCardDetails({
                             <TaskMembers members={selectedMembers} />
                             <Dates dateRange={dateRange} />
                         </div>
-                        <div>
+                        <div className="pr-11">
                             <DescriptionTextEditor
                                 onSave={handleDescriptionSave}
                             />
+
+                            <CommentSection />
                         </div>
                     </div>
                     <div className="bg-primary/80 shadow-inner shadow-gray-500 basis-[30%] p-2 rounded-lg space-y-3">

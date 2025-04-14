@@ -28,3 +28,9 @@ export type UserT = {
     image: string;
     boards?: BoardT[];
 };
+
+export type CommentT = {
+    content: string;
+    member?: UserT;
+    createdAt?: string;
+};
