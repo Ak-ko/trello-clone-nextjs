@@ -1,51 +1,62 @@
-import { defaultTasks } from "@/data/boards";
-import React, { useState } from "react";
-
+import React from "react";
 import TaskCard from "./task-card";
 import AddTaskCardButton from "./add-task-card-button";
-import { UserT } from "@/@types/board";
+import { useBoardState } from "../context/board-state-context";
 
-export default function TaskCardSection() {
-    const [tasks, setTasks] = useState(defaultTasks);
+export default function TaskCardSection({
+    droppableCardId,
+}: {
+    droppableCardId: number;
+}) {
+    const { droppableCards, addTask, editTask, completeTask } = useBoardState();
+    const droppableCard = droppableCards.find(
+        (dc) => dc.id === droppableCardId
+    );
+    const tasks = droppableCard ? droppableCard.tasks : [];
 
     const handleAddNewTaskCard = (name: string) => {
-        const newTask = {
-            id: tasks[tasks.length - 1].id + 1,
-            name,
-            isCompleted: false,
-        };
-        setTasks((prevTasks) => [...prevTasks, newTask]);
+        if (!name) return;
+        addTask(droppableCardId, name);
     };
 
     const handleEditTask = (taskId: number, name: string) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === taskId ? { ...task, name } : task
-            )
-        );
+        editTask(droppableCardId, taskId, name);
     };
 
     const handleTaskCompletion = (taskId: number, isCompleted: boolean) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === taskId ? { ...task, isCompleted } : task
-            )
-        );
+        completeTask(droppableCardId, taskId, isCompleted);
     };
 
     return (
         <>
             <div className="space-y-2">
-                {tasks?.map((task) => (
-                    <TaskCard
-                        task={task}
-                        key={task.id}
-                        onCompleteTask={handleTaskCompletion}
-                        onEditTask={handleEditTask}
-                    />
+                {tasks?.map((task, idx) => (
+                    <React.Fragment key={task.id}>
+                        {/* Drop zone above */}
+                        <div
+                            className="h-1 w-full transition-colors duration-200"
+                            data-drop-position="above"
+                            style={{ minHeight: 4, margin: 0, padding: 0 }}
+                        />
+                        <TaskCard
+                            task={task}
+                            onCompleteTask={handleTaskCompletion}
+                            onEditTask={handleEditTask}
+                            droppableCardId={droppableCardId}
+                            index={idx}
+                            totalTasks={tasks.length}
+                        />
+                        {/* Drop zone below (after last card) */}
+                        {idx === tasks.length - 1 && (
+                            <div
+                                className="h-1 w-full transition-colors duration-200"
+                                data-drop-position="below"
+                                style={{ minHeight: 4, margin: 0, padding: 0 }}
+                            />
+                        )}
+                    </React.Fragment>
                 ))}
             </div>
-
             <div className="mt-4">
                 <AddTaskCardButton onAddNewTaskCard={handleAddNewTaskCard} />
             </div>

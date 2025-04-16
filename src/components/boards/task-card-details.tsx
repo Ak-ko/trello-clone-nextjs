@@ -9,11 +9,15 @@ import MemberPicker from "./members/member-picker";
 import TaskMembers from "./members/task-members";
 import DescriptionTextEditor from "./description-text-editor";
 import CommentSection from "./comment-section";
+import CustomCheckBox from "../custom-checkbox";
+import { useBoardState } from "../context/board-state-context";
 
 export default function TaskCardDetails({
     task,
+    droppableCardId,
     onEdit,
 }: {
+    droppableCardId: number;
     task: TaskT;
     onEdit?: (id: number, name: string) => void;
 }) {
@@ -25,6 +29,8 @@ export default function TaskCardDetails({
     const [selectedMembers, setSelectedMembers] = useState<UserT[]>(
         [] as UserT[]
     );
+
+    const { completeTask } = useBoardState();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -74,28 +80,40 @@ export default function TaskCardDetails({
         console.log({ description });
     };
 
+    const handleChecked = () => {
+        completeTask(droppableCardId, task.id, !task.isCompleted);
+    };
+
     return (
         <DialogHeader>
             <DialogTitle>
-                <div>
-                    {!editing ? (
-                        <h1
-                            onClick={handleClick}
-                            className="font-bold text-wrap mb-3"
-                        >
-                            {task.name}
-                        </h1>
-                    ) : (
-                        <input
-                            autoFocus
-                            className="border w-full py-1"
-                            onBlur={handleBlur}
-                            onKeyDown={handleKeyDown}
-                            type="text"
-                            defaultValue={task.name}
-                            ref={inputRef}
+                <div className="flex items-center gap-2">
+                    <div>
+                        <CustomCheckBox
+                            defaultChecked={task.isCompleted}
+                            onChecked={handleChecked}
                         />
-                    )}
+                    </div>
+                    <div className="w-[98%] mt-2">
+                        {!editing ? (
+                            <h1
+                                onClick={handleClick}
+                                className="font-bold text-wrap mb-3"
+                            >
+                                {task.name}
+                            </h1>
+                        ) : (
+                            <input
+                                autoFocus
+                                className="border w-full py-1"
+                                onBlur={handleBlur}
+                                onKeyDown={handleKeyDown}
+                                type="text"
+                                defaultValue={task.name}
+                                ref={inputRef}
+                            />
+                        )}
+                    </div>
                 </div>
             </DialogTitle>
             {/* 
