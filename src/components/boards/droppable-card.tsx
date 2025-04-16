@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import TaskCardSection from "./task-card-section";
 import { keydownActions } from "@/lib/keydown";
 import { useDroppable } from "@dnd-kit/core";
+import { useBoardState } from "../context/board-state-context";
 
 export default function DroppableCard({
     droppableCard,
@@ -13,52 +14,47 @@ export default function DroppableCard({
     droppableCard: { id: number; name: string };
 }) {
     const [editing, setEditing] = useState(false);
-
+    const { editDroppableCard } = useBoardState();
     const { isOver, setNodeRef } = useDroppable({
         id: `droppable-${droppableCard.id}`,
     });
     const style = {
         color: isOver ? "green" : undefined,
     };
-
     const inputRef = useRef<HTMLInputElement>(null);
-
     useEffect(() => {
         if (editing && inputRef.current) {
             inputRef.current.select();
         }
     }, [editing]);
-
     const handleClick = () => {
         setEditing(true);
     };
-
     const handleCancel = () => {
         setEditing(false);
     };
-
     const handleEdit = () => {
         const input = inputRef?.current;
         if (!input || !input.value.trim()) {
             return;
         }
-
-        onEdit && onEdit(droppableCard.id, input.value.trim());
-
+        editDroppableCard &&
+            editDroppableCard(droppableCard.id, input.value.trim());
         setEditing(false);
     };
-
     const handleBlur = () => {
         handleEdit();
     };
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         keydownActions.enter(e, handleEdit);
         keydownActions.escape(e, handleCancel);
     };
-
     return (
-        <div className="shrink-0 max-w-[300px] w-full p-3 bg-gray-200 border border-gray-300 rounded-xl shadow-sm">
+        <div
+            ref={setNodeRef}
+            className="shrink-0 max-w-[300px] w-full p-3 bg-gray-200 border border-gray-300 rounded-xl shadow-sm"
+            style={style}
+        >
             <div>
                 {!editing ? (
                     <h1
@@ -79,8 +75,7 @@ export default function DroppableCard({
                     />
                 )}
             </div>
-
-            <TaskCardSection />
+            <TaskCardSection droppableCardId={droppableCard.id} />
         </div>
     );
 }

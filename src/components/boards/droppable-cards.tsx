@@ -6,47 +6,43 @@ import DroppableCard from "./droppable-card";
 import AddDroppableCardButton from "./add-droppable-card-button";
 import { DndContext } from "@dnd-kit/core";
 import { DroppableCardT } from "@/@types/board";
+import {
+    BoardStateProvider,
+    useBoardState,
+} from "../context/board-state-context";
 
 export default function DroppableCards() {
-    const [droppableCards, setDroppableCards] = useState(defaultDroppableCards);
+    return (
+        <BoardStateProvider>
+            <DroppableCardsInner />
+        </BoardStateProvider>
+    );
+}
 
-    const addDroppableCard = (name: string) => {
-        if (!name) return;
+function DroppableCardsInner() {
+    const { droppableCards, addDroppableCard, editDroppableCard, moveTask } =
+        useBoardState();
 
-        setDroppableCards([
-            ...droppableCards,
-            {
-                id: droppableCards[droppableCards.length - 1].id + 1,
-                name,
-            },
-        ]);
+    const handleDragOver = (event: any) => {
+        // Optional: highlight drop targets
     };
 
-    const editDroppableCard = (id: number, name: string) => {
-        if (!name) return;
-
-        const newDroppableCards = droppableCards?.map(
-            (card: DroppableCardT) => {
-                if (card.id === id) {
-                    return { ...card, name };
-                }
-                return card;
+    const handleDragEnd = (event: any) => {
+        const { active, over } = event;
+        if (active && over && active.data.current && over.id) {
+            const { droppableId: fromDroppableId, taskId } =
+                active.data.current;
+            const toDroppableId = parseInt(
+                String(over.id).replace("droppable-", "")
+            );
+            if (fromDroppableId !== toDroppableId) {
+                moveTask(fromDroppableId, toDroppableId, taskId);
             }
-        );
-
-        setDroppableCards(newDroppableCards || []);
-    };
-
-    const handleDrageOver = () => {
-        console.log("drag over");
-    };
-
-    const handleDragEnd = () => {
-        console.log("drag end");
+        }
     };
 
     return (
-        <DndContext onDragOver={handleDrageOver} onDragEnd={handleDragEnd}>
+        <DndContext onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
             <div className={`flex items-start gap-4`}>
                 {droppableCards.map((_dC) => (
                     <DroppableCard
@@ -55,7 +51,6 @@ export default function DroppableCards() {
                         onEdit={editDroppableCard}
                     />
                 ))}
-
                 <AddDroppableCardButton
                     onAddNewDroppableCard={addDroppableCard}
                 />
