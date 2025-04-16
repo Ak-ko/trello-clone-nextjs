@@ -1,9 +1,11 @@
 import { TaskT, UserT } from "@/@types/board";
 import { Card, CardContent } from "../ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { useDraggable } from "@dnd-kit/core";
 
 import CustomCheckBox from "../custom-checkbox";
 import TaskCardDetails from "./task-card-details";
+import { useId } from "react";
 
 export default function TaskCard({
     task,
@@ -15,6 +17,19 @@ export default function TaskCard({
     onEditTask?: (taskId: number, name: string) => void;
     onSelectMembers?: (members: UserT[]) => void;
 }) {
+    const id = useId();
+    const { attributes, listeners, setNodeRef, transform, isDragging, active } =
+        useDraggable({
+            id: `draggable-${task.id}-${id}`,
+        });
+
+    const style = transform
+        ? {
+              cursor: "grab",
+              transform: `translate3d(${transform.x}px, ${transform.y}px, 0) rotate(10deg)`,
+          }
+        : undefined;
+
     const handleChecked = (checked: boolean) => {
         onCompleteTask?.(task.id, checked);
     };
@@ -26,7 +41,13 @@ export default function TaskCard({
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Card className="!p-3 rounded-xl cursor-pointer hover:shadow-lg group/task-card">
+                <Card
+                    ref={setNodeRef}
+                    style={style}
+                    {...listeners}
+                    {...attributes}
+                    className="!p-3 rounded-xl cursor-pointer hover:shadow-lg group/task-card"
+                >
                     <CardContent className="!px-4">
                         <div className="flex items-center">
                             <CustomCheckBox

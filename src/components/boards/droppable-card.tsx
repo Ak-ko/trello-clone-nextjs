@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import TaskCardSection from "./task-card-section";
 import { keydownActions } from "@/lib/keydown";
+import { useDroppable } from "@dnd-kit/core";
 
 export default function DroppableCard({
     droppableCard,
@@ -12,6 +13,13 @@ export default function DroppableCard({
     droppableCard: { id: number; name: string };
 }) {
     const [editing, setEditing] = useState(false);
+
+    const { isOver, setNodeRef } = useDroppable({
+        id: `droppable-${droppableCard.id}`,
+    });
+    const style = {
+        color: isOver ? "green" : undefined,
+    };
 
     const inputRef = useRef<HTMLInputElement>(null);
 

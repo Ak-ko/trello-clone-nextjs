@@ -4,6 +4,7 @@ import { defaultDroppableCards } from "@/data/boards";
 import React, { useState } from "react";
 import DroppableCard from "./droppable-card";
 import AddDroppableCardButton from "./add-droppable-card-button";
+import { DndContext } from "@dnd-kit/core";
 import { DroppableCardT } from "@/@types/board";
 
 export default function DroppableCards() {
@@ -36,17 +37,29 @@ export default function DroppableCards() {
         setDroppableCards(newDroppableCards || []);
     };
 
-    return (
-        <div className={`flex items-start gap-4`}>
-            {droppableCards.map((_dC) => (
-                <DroppableCard
-                    key={_dC.id}
-                    droppableCard={_dC}
-                    onEdit={editDroppableCard}
-                />
-            ))}
+    const handleDrageOver = () => {
+        console.log("drag over");
+    };
 
-            <AddDroppableCardButton onAddNewDroppableCard={addDroppableCard} />
-        </div>
+    const handleDragEnd = () => {
+        console.log("drag end");
+    };
+
+    return (
+        <DndContext onDragOver={handleDrageOver} onDragEnd={handleDragEnd}>
+            <div className={`flex items-start gap-4`}>
+                {droppableCards.map((_dC) => (
+                    <DroppableCard
+                        key={_dC.id}
+                        droppableCard={_dC}
+                        onEdit={editDroppableCard}
+                    />
+                ))}
+
+                <AddDroppableCardButton
+                    onAddNewDroppableCard={addDroppableCard}
+                />
+            </div>
+        </DndContext>
     );
 }
